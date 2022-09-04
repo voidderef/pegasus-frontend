@@ -1,5 +1,13 @@
 ![screenshot](etc/promo/screenshot_alpha10.jpg)
 
+# PERSONAL NOTES TO SORT
+
+* dockerized building for linux and windows?
+* entire packaging and deployment process missing -> creating ready to ship tarballs with all libraries included
+* dependency version stability and specific targetting -> important for embedded systems -> docker builds
+* maybe something like application containers to run this with all libraries included on linux, e.g. snap, flatpack?
+* windows build
+* make pegasus use local folders and not `.config`
 
 # Pegasus Frontend
 
