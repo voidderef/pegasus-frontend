@@ -3,5 +3,6 @@ HEADERS += \
     $$PWD/IOManager.h
 
 SOURCES += \
-    $$PWD/IODeviceTest.cpp \
     $$PWD/IOManager.cpp
+
+include(piuio/piuio.pri)
