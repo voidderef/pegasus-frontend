@@ -24,6 +24,7 @@
 #include <QObject>
 #include <QVector>
 
+#include "Log.h"
 
 namespace model {
 
@@ -31,7 +32,7 @@ class Keys : public QObject {
     Q_OBJECT
 
     #define KEYVEC_PROP(keytype, keylist, checkFn) \
-        private: \
+        public: \
             Q_PROPERTY(QList<QObject*> keylist READ keylist NOTIFY keysChanged) \
             QList<QObject*> keylist() { \
                 return to_qmlkeys(KeyEvent::keytype); \

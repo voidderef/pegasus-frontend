@@ -9,6 +9,7 @@ class IODevice {
 public:
     virtual ~IODevice() = default;
 
+    // TODO change this to a normal enum to avoid all the casting-foo
     enum class Input : unsigned char {
         ACCEPT = 0,
         CANCEL = 1,
