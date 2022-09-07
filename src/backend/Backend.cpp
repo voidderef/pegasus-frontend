@@ -28,6 +28,7 @@
 // For type registration
 #include "model/Api.h"
 #include "model/keys/Key.h"
+#include "model/arcade/Arcade.h"
 #include "model/arcade/IOManager.h"
 #include "model/gaming/Assets.h"
 #include "model/gaming/GameFile.h"
@@ -81,6 +82,10 @@ void register_api_classes()
     qmlRegisterUncreatableType<model::GamepadManager>(API_URI, 0, 12, "GamepadManager", error_msg);
     qmlRegisterUncreatableType<model::DeviceInfo>(API_URI, 0, 13, "Device", error_msg);
 
+    qmlRegisterType<model::Arcade>(API_URI, 0, 14, "Arcade");
+    qmlRegisterType<model::IOManager>(API_URI, 0, 14, "IOManager");
+    qRegisterMetaType<model::IODevice::Input>("IODevice::Input");
+
     // QML utilities
     qmlRegisterType<FolderListModel>("Pegasus.FolderListModel", 1, 0, "FolderListModel");
 
@@ -132,15 +137,11 @@ Backend::Backend()
 
 Backend::~Backend()
 {
-    // TODO this needs to be properly hooked on the app close event
-    m_io_manager->shutdown();
-
     delete m_launcher;
     delete m_frontend;
     delete m_providerman;
     delete m_api_private;
     delete m_api_public;
-    delete m_io_manager;
 
 #if defined(WITH_SDL_GAMEPAD) || defined(WITH_SDL_POWER)
     SDL_Quit();
@@ -162,7 +163,6 @@ Backend::Backend(const CliArgs& args)
 
     m_api_public = new model::ApiObject(args);
     m_api_private = new model::Internal(args);
-    m_io_manager = new model::IOManager();
     m_frontend = new FrontendLayer(m_api_public, m_api_private);
     m_launcher = new ProcessLauncher();
     m_providerman = new ProviderManager();
@@ -268,14 +268,10 @@ void Backend::onProcessLaunched()
 {
     m_frontend->teardown();
     m_api_private->gamepad().stop();
-
-    m_io_manager->shutdown();
 }
 
 void Backend::onProcessFinished()
 {
-    m_io_manager->init();
-
     m_frontend->rebuild();
     m_api_private->gamepad().start(m_args);
 }

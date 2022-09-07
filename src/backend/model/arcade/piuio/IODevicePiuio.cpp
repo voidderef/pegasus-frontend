@@ -79,6 +79,8 @@ bool IODevicePiuio::update()
     //     m_buffered_inputs[static_cast<int>(IODevice::Input::MAIN_MENU)] |= input.pakets[i].piu.test;
     // }
 
+    m_buffered_inputs[0] = !m_buffered_inputs[0];
+
     return true;
 }
 
@@ -93,14 +95,9 @@ bool IODevicePiuio::close()
     return true;
 }
 
-bool IODevicePiuio::is_input_active(IODevice::Input input)
+bool IODevicePiuio::get_input(IODevice::Input input)
 {
-    if (static_cast<int>(input) >= static_cast<int>(IODevice::Input::TOTAL_COUNT)) {
-        Log::warning(LOGMSG("Invalid input index requested, defaulting to 0: %1").arg(static_cast<int>(input)));
-        return false;
-    }
-
-    return m_buffered_inputs[static_cast<int>(input)];
+    return m_buffered_inputs[input];
 }
 
 void IODevicePiuio::set_output(uint16_t index, bool active)

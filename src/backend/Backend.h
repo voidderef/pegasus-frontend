@@ -21,7 +21,7 @@
 
 namespace model { class ApiObject; }
 namespace model { class Internal; }
-namespace model { class IOManager; }
+namespace model { class Arcade; }
 class FrontendLayer;
 class ProcessLauncher;
 class ProviderManager;
@@ -47,7 +47,6 @@ private:
     // NOTE: unique_ptr had forward declaration issues
     model::ApiObject* m_api_public;
     model::Internal* m_api_private;
-    model::IOManager* m_io_manager;
     FrontendLayer* m_frontend;
     ProcessLauncher* m_launcher;
     ProviderManager* m_providerman;
