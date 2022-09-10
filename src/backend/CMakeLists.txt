@@ -43,6 +43,7 @@ pegasus_require_qt(COMPONENTS
     Multimedia
     Sql
     Svg
+    Gamepad
 )
 target_link_libraries(pegasus-backend PUBLIC
     Qt::Qml

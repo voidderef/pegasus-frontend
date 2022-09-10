@@ -5,7 +5,7 @@ pegasus_require_qt(COMPONENTS
     QuickCompiler
 )
 
-qtquick_compiler_add_resources(PEGASUS_QML_ASSETS
+qt6_add_resources(PEGASUS_QML_ASSETS
     frontend.qrc
     "${PROJECT_SOURCE_DIR}/src/qmlutils/qmlutils.qrc"  # FIXME
     "${PROJECT_SOURCE_DIR}/src/themes/themes.qrc"  # FIXME

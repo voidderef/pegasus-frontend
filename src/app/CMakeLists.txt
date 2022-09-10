@@ -10,7 +10,7 @@ pegasus_require_qt(COMPONENTS
 # Find TS files, compile them to QM and generate a QRC file collecting them
 
 file(GLOB PEGASUS_TS_FILES LIST_DIRECTORIES false "${PROJECT_SOURCE_DIR}/lang/pegasus_*.ts")
-qt_add_translation(PEGASUS_QM_FILES "${PEGASUS_TS_FILES}")
+#qt6_add_translation(PEGASUS_QM_FILES "${PEGASUS_TS_FILES}")
 
 set(PEGASUS_LOCALE_QRC "${CMAKE_CURRENT_BINARY_DIR}/locales.qrc")
 file(WRITE "${PEGASUS_LOCALE_QRC}" "<!DOCTYPE RCC><RCC version=\"1.0\"><qresource prefix=\"i18n\">\n")

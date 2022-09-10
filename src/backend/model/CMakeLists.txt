@@ -2,6 +2,21 @@ target_sources(pegasus-backend PRIVATE
     Api.cpp
     Api.h
     ObjectListModel.h
+    arcade/piuio/IODevicePiuio.cpp
+    arcade/piuio/IODevicePiuio.h
+    arcade/piuio/piuio-usb.c
+    arcade/piuio/piuio-usb.h
+    arcade/piuio/piuio.h
+    arcade/piuio/result.h
+    arcade/piuio/usb_.h
+    arcade/piuio/usb.c
+    arcade/Arcade.cpp
+    arcade/Arcade.h
+    arcade/IODevice.h
+    arcade/IODeviceState.cpp
+    arcade/IODeviceState.h
+    arcade/IOManager.cpp
+    arcade/IOManager.h
     device/DeviceInfo.cpp
     device/DeviceInfo.h
     gaming/Assets.cpp

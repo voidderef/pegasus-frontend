@@ -6,6 +6,8 @@ project(pegasus-frontend
     LANGUAGES CXX
 )
 
+set(QT_DEFAULT_MAJOR_VERSION 6)
+
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${PROJECT_SOURCE_DIR}/cmake")
 
 
