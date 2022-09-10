@@ -27,6 +27,14 @@ clean:
 
     rm -rf build
 
+build-docker-windows:
+    #!/usr/bin/env sh
+
+    set -euxo pipefail 
+
+    docker build -t qt-build:latest -f Dockerfile.qtminimal .
+    docker run -v $(pwd):/pegasus qt-build:latest
+
 build-mingw:
     #!/usr/bin/env sh
 

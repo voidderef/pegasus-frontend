@@ -145,3 +145,5 @@ RUN pacman -S --noconfirm --noprogressbar \
 USER devel
 ONBUILD USER root
 ONBUILD WORKDIR /
+
+CMD cd /pegasus && just build-mingw 
