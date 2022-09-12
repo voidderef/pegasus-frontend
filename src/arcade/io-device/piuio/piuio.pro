@@ -1,41 +1,18 @@
 TEMPLATE = lib
+TARGET = io-piuio
 
 QT += qml quick sql
-CONFIG += c++11 staticlib warn_on exceptions_off
-
-!isEmpty(INSIDE_FLATPAK): DEFINES *= PEGASUS_INSIDE_FLATPAK
-msvc: DEFINES *= _USE_MATH_DEFINES
-
+CONFIG += plugin c++11 warn_on exceptions_off
 
 SOURCES += \
-    Backend.cpp \
-    FrontendLayer.cpp \
-    PegasusAssets.cpp \
-    ProcessLauncher.cpp \
-    ScriptRunner.cpp \
-    Paths.cpp \
-    AppSettings.cpp \
-    Log.cpp \
+    $$PWD/IODevicePiuio.cpp
 
 HEADERS += \
-    Backend.h \
-    CliArgs.h \
-    FrontendLayer.h \
-    PegasusAssets.h \
-    ProcessLauncher.h \
-    ScriptRunner.h \
-    Paths.h \
-    AppSettings.h \
-    Log.h \
+    $$PWD/IODevicePiuio.h \
+    $$PWD/piuio-usb.h \
+    $$PWD/piuio.h \
+    $$PWD/result.h
 
-include(imggen/imggen.pri)
-include(model/model.pri)
-include(parsers/parsers.pri)
-include(platform/platform.pri)
-include(providers/providers.pri)
-include(types/types.pri)
-include(utils/utils.pri)
+include(../../api/api.pri)
 
 DEFINES *= $${COMMON_DEFINES}
-
-include($${TOP_SRCDIR}/thirdparty/thirdparty.pri)

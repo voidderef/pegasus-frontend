@@ -18,8 +18,11 @@ build:
 
     qmake ../.. INSTALLDIR="$(realpath ../bin)"
     make -j $(grep -c ^processor /proc/cpuinfo)
-    #make
     make install
+    cd ../..
+    cp build/bin/pegasus-fe arcade/test/pegasus-fe
+    cp build/out/src/arcade/backend/libarcadebackend.so arcade/test/libarcade.so
+    cp build/out/src/arcade/io-device/piuio/libio-piuio.so arcade/test/libio-piuio.so
 
 clean:
     #!/usr/bin/env sh

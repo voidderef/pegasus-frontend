@@ -2,13 +2,11 @@
 
 #include <string.h>
 
-#include "Log.h"
-
 #include "piuio.h"
 #include "piuio-usb.h"
 #include "result.h"
 
-namespace model {
+namespace arcade {
 
 IODevicePiuio::IODevicePiuio() :
     m_handle(nullptr)
@@ -95,14 +93,14 @@ bool IODevicePiuio::close()
     return true;
 }
 
-bool IODevicePiuio::get_input(IODevice::Input input)
+bool IODevicePiuio::get_input(Input::Event input)
 {
     return m_buffered_inputs[input];
 }
 
 void IODevicePiuio::set_output(uint16_t index, bool active)
 {
-    Log::info(LOGMSG("Setting output PIUIO: %1 -> %2").arg(index).arg(active));
+    // Log::info(LOGMSG("Setting output PIUIO: %1 -> %2").arg(index).arg(active));
 }
 
 } // namespace model

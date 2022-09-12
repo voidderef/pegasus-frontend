@@ -28,8 +28,6 @@
 // For type registration
 #include "model/Api.h"
 #include "model/keys/Key.h"
-#include "../arcade/Arcade.h"
-#include "../arcade/IOManager.h"
 #include "model/gaming/Assets.h"
 #include "model/gaming/GameFile.h"
 #include "model/internal/Internal.h"
@@ -81,10 +79,6 @@ void register_api_classes()
     qmlRegisterUncreatableType<model::Keys>(API_URI, 0, 10, "Keys", error_msg);
     qmlRegisterUncreatableType<model::GamepadManager>(API_URI, 0, 12, "GamepadManager", error_msg);
     qmlRegisterUncreatableType<model::DeviceInfo>(API_URI, 0, 13, "Device", error_msg);
-
-    qmlRegisterType<model::Arcade>(API_URI, 0, 14, "Arcade");
-    qmlRegisterType<model::IOManager>(API_URI, 0, 14, "IOManager");
-    qRegisterMetaType<model::IODevice::Input>("IODevice::Input");
 
     // QML utilities
     qmlRegisterType<FolderListModel>("Pegasus.FolderListModel", 1, 0, "FolderListModel");

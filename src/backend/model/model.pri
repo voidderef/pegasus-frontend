@@ -3,7 +3,6 @@ HEADERS += \
     $$PWD/Api.h \
     $$PWD/ObjectListModel.h
 
-include(arcade/arcade.pri)
 include(device/device.pri)
 include(gaming/gaming.pri)
 include(internal/internal.pri)

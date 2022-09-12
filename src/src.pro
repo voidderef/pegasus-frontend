@@ -6,5 +6,4 @@ SUBDIRS += \
     backend \
     frontend
 
-app.depends = backend frontend
-backend.depends = arcade
+app.depends = arcade backend frontend

@@ -19,12 +19,17 @@
 #include "backend/Paths.h"
 #include "backend/platform/TerminalKbd.h"
 
+#include <iostream>
+
 #include <QCommandLineParser>
 #include <QFileInfo>
 #include <QGuiApplication>
+#include <QPluginLoader>
 #include <QIcon>
 #include <QSettings>
 #include <QtPlugin>
+
+#include "../arcade/backend/ArcadeInterface.h"
 
 #ifdef Q_OS_ANDROID
 #include "backend/platform/AndroidHelpers.h"
@@ -71,6 +76,17 @@ int main(int argc, char *argv[])
 
     backend::CliArgs cli_args = handle_cli_args(app);
     cli_args.portable |= portable_txt_present();
+
+    QPluginLoader loader("libarcade.so");
+
+    if (!loader.load()) {
+        std::cout << "Failed to load libarcade.so, skipping" << std::endl;
+    } else {
+        arcade::ArcadeInterface *plugin = qobject_cast<arcade::ArcadeInterface *>(loader.instance());
+
+        std::cout << "Loaded libarcade.so" << std::endl;
+        plugin->init();
+    }
 
     backend::Backend backend(cli_args);
     backend.start();

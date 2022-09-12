@@ -6,14 +6,14 @@
 #include <QFuture>
 #include <QAtomicInt>
 
-#include "api/IODevice.h"
+#include "../api/IODevice.h"
 #include "IODeviceState.h"
 
-namespace model {
+namespace arcade {
 
 class IOManager : public QObject {
     Q_OBJECT
-    Q_PROPERTY(QVector<QString> ioDeviceLibraries READ ioDeviceLibraries WRITE setIoDeviceLibraries)
+    Q_PROPERTY(QVector<QString> ioDeviceLibraries READ ioDeviceLibraries WRITE setIoDeviceLibraries CONSTANT)
 
 public:
     explicit IOManager(QObject* parent = nullptr);
@@ -30,9 +30,9 @@ public:
 
 signals:
     // TODO this can be further improved to also keep track of how long the button is pressed already
-    void inputPressed(IODevice::Input input);
-    void inputReleased(IODevice::Input input);
-    void inputHeld(IODevice::Input input);
+    void inputPressed(Input::Event input);
+    void inputReleased(Input::Event input);
+    void inputHeld(Input::Event input);
 
 private:
     std::vector<IODeviceState*> m_io_device_states;
@@ -50,4 +50,4 @@ private:
     IODevice* load_from_library(const QString& path);
 };
 
-} // namespace model
+} // namespace arcade

@@ -1,10 +1,14 @@
 #pragma once
 
-#include "../IODevice.h"
+#include "../../api/IODevice.h"
 
-namespace model {
+namespace arcade {
 
-class IODevicePiuio : public IODevice {
+class IODevicePiuio : public QObject, public IODevice {
+    Q_OBJECT
+    Q_INTERFACES(arcade::IODevice)
+    Q_PLUGIN_METADATA(IID "org.djhackers.pegasus.IODevicePiuio")
+
 public:
     IODevicePiuio();
     ~IODevicePiuio();
@@ -15,12 +19,12 @@ public:
     bool update() override;
     bool close() override;
 
-    bool get_input(IODevice::Input input) override;
+    bool get_input(Input::Event input) override;
     void set_output(uint16_t index, bool active) override;
 
 private:
     void* m_handle;
-    bool m_buffered_inputs[INPUT_TOTAL_COUNT];
+    bool m_buffered_inputs[Input::Event::INPUT_EVENT_TOTAL_COUNT];
 };
 
-}
+} // namespace arcade

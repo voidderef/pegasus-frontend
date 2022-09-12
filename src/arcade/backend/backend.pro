@@ -1,16 +1,20 @@
 TEMPLATE = lib
+TARGET = arcadebackend
 
-CONFIG += c++11 staticlib warn_on exceptions_off
+QT += qml quick sql
+CONFIG += plugin c++11 warn_on exceptions_off
 
 SOURCES += \
-    $$PWD/Arcade.cpp \
+    $$PWD/ArcadePlugin.cpp \
     $$PWD/IODeviceState.cpp \
     $$PWD/IOManager.cpp
 
 HEADERS += \
-    $$PWD/Arcade.h \
+    $$PWD/ArcadeInterface.h \
+    $$PWD/ArcadePlugin.h \
     $$PWD/IODeviceState.h \
-    $$PWD/IOManager.h \
-    $$PWD/../api/IODevice.h
+    $$PWD/IOManager.h
 
-include($$PWD/../api/api.pri)
+include(../api/api.pri)
+
+DEFINES *= $${COMMON_DEFINES}

@@ -1,2 +1,3 @@
 HEADERS += \
-    $$PWD/IODevice.h
+    $$PWD/IODevice.h \
+    $$PWD/Input.h
