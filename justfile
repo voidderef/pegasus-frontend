@@ -18,6 +18,7 @@ build:
 
     qmake ../.. INSTALLDIR="$(realpath ../bin)"
     make -j $(grep -c ^processor /proc/cpuinfo)
+    #make
     make install
 
 clean:

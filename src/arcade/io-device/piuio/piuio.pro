@@ -2,17 +2,10 @@ TEMPLATE = lib
 
 QT += qml quick sql
 CONFIG += c++11 staticlib warn_on exceptions_off
-android: QT += androidextras
-
-!isEmpty(USE_SDL_GAMEPAD)|!isEmpty(USE_SDL_POWER): include($${TOP_SRCDIR}/thirdparty/link_to_sdl.pri)
-
-isEmpty(USE_SDL_GAMEPAD): QT += gamepad
 
 !isEmpty(INSIDE_FLATPAK): DEFINES *= PEGASUS_INSIDE_FLATPAK
 msvc: DEFINES *= _USE_MATH_DEFINES
 
-INCLUDEPATH += ../arcade
-LIBS += -L../arcade -larcade
 
 SOURCES += \
     Backend.cpp \

@@ -28,8 +28,8 @@
 // For type registration
 #include "model/Api.h"
 #include "model/keys/Key.h"
-#include "model/arcade/Arcade.h"
-#include "model/arcade/IOManager.h"
+#include "../arcade/Arcade.h"
+#include "../arcade/IOManager.h"
 #include "model/gaming/Assets.h"
 #include "model/gaming/GameFile.h"
 #include "model/internal/Internal.h"

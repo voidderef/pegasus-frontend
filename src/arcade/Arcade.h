@@ -4,8 +4,6 @@
 
 #include "IOManager.h"
 
-#include "utils/QmlHelpers.h"
-
 namespace model {
 
 class Arcade : public QObject {

@@ -1,12 +1,12 @@
 #include "IOManager.h"
 
 #include <cstring>
+#include <dlfcn.h>
 
 #include <QtConcurrent/QtConcurrent>
 #include <QThread>
 
-#include "piuio/IODevicePiuio.h"
-#include "Log.h"
+#include "../backend/Log.h"
 
 #include <QGuiApplication>
 #include <QKeyEvent>
@@ -31,10 +31,22 @@ void IOManager::init()
     Log::info(LOGMSG("Initializing arcade IO manager..."));
 
     // TODO static for now, make dynamic with library loading etc later
-    IODevice* io_device = new IODevicePiuio();
-    auto io_device_state = new IODeviceState(io_device);
+    //IODevice* io_device = new IODevicePiuio();
+    //auto io_device_state = new IODeviceState(io_device);
 
-    m_io_device_states.push_back(io_device_state);
+    Log::info(LOGMSG("Loading %1 IODevice libraries...").arg(m_ioDeviceLibraries.size()));
+
+    for (auto ioDeviceLibraryPath : m_ioDeviceLibraries) {
+        auto io_device = load_from_library(ioDeviceLibraryPath);
+
+        if (io_device != nullptr) {
+            auto io_device_state = new IODeviceState(io_device);
+
+            m_io_device_states.push_back(io_device_state);
+        } else {
+            Log::warning(LOGMSG("Loading IODevice from library %1 failed, skipping").arg(ioDeviceLibraryPath));
+        }
+    }
 
     for (auto io_device_state : m_io_device_states) {
         // TODO if opening fails, do not add it to the list of devices to poll
@@ -105,6 +117,27 @@ void IOManager::io_thread()
         // TODO make configurable/sane default to avoid banging the CPU?
         QThread::msleep(1000);
     }
+}
+
+IODevice* IOManager::load_from_library(const QString& path)
+{
+    typedef IODevice* (*create_io_device_t)(void);
+    void* so = dlopen(path.toStdString().c_str(), RTLD_NOW);
+
+	if (so == NULL) {
+        Log::warning(LOGMSG("Ignoring library %1 that failed to load: %2").arg(path).arg(dlerror()));
+        return nullptr;
+    }
+
+    create_io_device_t create_io_device = (create_io_device_t) dlsym(so, "create_io_device");
+
+   if (create_io_device == nullptr) {
+        Log::warning(LOGMSG("Could not find function 'create_io_device' in library %2").arg(path));
+        dlclose(so);
+        return nullptr;
+    }
+
+    return create_io_device();
 }
 
 } // namespace model

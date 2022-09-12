@@ -10,6 +10,7 @@ OTHER_FILES += qmlplugins.qml
 
 # Linking
 
+include($${TOP_SRCDIR}/src/link_to_arcade.pri)
 include($${TOP_SRCDIR}/src/link_to_backend.pri)
 include($${TOP_SRCDIR}/src/link_to_frontend.pri)
 
