@@ -131,4 +131,4 @@ void IOManager::io_thread()
     LOG_DEBUG("IO thread stopped");
 }
 
-} // namespace model
+} // namespace arcade
