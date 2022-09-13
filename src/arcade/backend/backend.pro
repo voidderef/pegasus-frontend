@@ -5,15 +5,17 @@ QT += qml quick sql
 CONFIG += plugin c++11 warn_on exceptions_off
 
 SOURCES += \
-    $$PWD/ArcadePlugin.cpp \
+    $$PWD/Arcade.cpp \
     $$PWD/IODeviceState.cpp \
-    $$PWD/IOManager.cpp
+    $$PWD/IOManager.cpp \
+    $$PWD/main.cpp
 
 HEADERS += \
-    $$PWD/ArcadeInterface.h \
+    $$PWD/Arcade.h \
     $$PWD/ArcadePlugin.h \
     $$PWD/IODeviceState.h \
-    $$PWD/IOManager.h
+    $$PWD/IOManager.h \
+    $$PWD/Log.h
 
 include(../api/api.pri)
 

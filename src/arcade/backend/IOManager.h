@@ -5,21 +5,24 @@
 #include <QObject>
 #include <QFuture>
 #include <QAtomicInt>
+#include <QQmlParserStatus>
 
 #include "../api/IODevice.h"
 #include "IODeviceState.h"
 
 namespace arcade {
 
-class IOManager : public QObject {
+class IOManager : public QObject, public QQmlParserStatus {
     Q_OBJECT
+    Q_INTERFACES(QQmlParserStatus)
+
     Q_PROPERTY(QVector<QString> ioDeviceLibraries READ ioDeviceLibraries WRITE setIoDeviceLibraries CONSTANT)
 
 public:
-    explicit IOManager(QObject* parent = nullptr);
-    ~IOManager();
+    void classBegin() override;
+    void componentComplete() override;
 
-
+public:
     QVector<QString> ioDeviceLibraries() const {
         return m_ioDeviceLibraries;
     }
@@ -41,13 +44,10 @@ private:
     QFuture<void> m_io_thread;
     QVector<QString> m_ioDeviceLibraries;
 
-    // TODO search for libraries in a given folder to dynamically load IO devices
     void init();
     void shutdown();
 
     void io_thread();
-
-    IODevice* load_from_library(const QString& path);
 };
 
 } // namespace arcade

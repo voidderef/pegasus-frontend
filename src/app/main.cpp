@@ -29,8 +29,6 @@
 #include <QSettings>
 #include <QtPlugin>
 
-#include "../arcade/backend/ArcadeInterface.h"
-
 #ifdef Q_OS_ANDROID
 #include "backend/platform/AndroidHelpers.h"
 #endif
@@ -77,15 +75,13 @@ int main(int argc, char *argv[])
     backend::CliArgs cli_args = handle_cli_args(app);
     cli_args.portable |= portable_txt_present();
 
+    // TODO turn this into a dynamic solution to allow loading of any plugins from plugins folder
     QPluginLoader loader("libarcade.so");
 
     if (!loader.load()) {
         std::cout << "Failed to load libarcade.so, skipping" << std::endl;
     } else {
-        arcade::ArcadeInterface *plugin = qobject_cast<arcade::ArcadeInterface *>(loader.instance());
-
-        std::cout << "Loaded libarcade.so" << std::endl;
-        plugin->init();
+        std::cout << "Arcade plugin loaded" << std::endl;
     }
 
     backend::Backend backend(cli_args);
