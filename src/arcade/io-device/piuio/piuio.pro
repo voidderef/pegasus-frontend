@@ -4,8 +4,12 @@ TARGET = io-piuio
 QT += qml quick sql
 CONFIG += plugin c++11 warn_on exceptions_off
 
+LIBS += -lusb-1.0
+
 SOURCES += \
-    $$PWD/IODevicePiuio.cpp
+    $$PWD/IODevicePiuio.cpp \
+    $$PWD/piuio-usb.c \
+    $$PWD/usb.c
 
 HEADERS += \
     $$PWD/IODevicePiuio.h \

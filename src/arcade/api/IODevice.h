@@ -9,6 +9,7 @@
 
 namespace arcade {
 
+// TODO needs a proper logger interface to pass logger instance to this
 class IODevice {
 public:
     virtual const char* name() = 0;

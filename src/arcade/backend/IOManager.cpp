@@ -39,6 +39,13 @@ void IOManager::init()
         if (loader.load()) {
             arcade::IODevice *io_device = qobject_cast<arcade::IODevice*>(loader.instance());
 
+            LOG_DEBUG("Opening IO device: %s", io_device->name());
+
+            if (!io_device->open()) {
+                LOG_ERROR("Failed opening IO device: %s", io_device->name());
+                continue;
+            }
+
             auto io_device_state = new IODeviceState(io_device);
             m_io_device_states.push_back(io_device_state);
 
@@ -48,14 +55,7 @@ void IOManager::init()
         }
     }
 
-    for (auto io_device_state : m_io_device_states) {
-        LOG_DEBUG("Opening IO device: %s", io_device_state->m_device->name());
-
-        // TODO if opening fails, do not add it to the list of devices to poll
-        if (!io_device_state->m_device->open()) {
-            LOG_ERROR("Failed opening IO device: %s", io_device_state->m_device->name());
-        }
-    }
+    LOG_INFO("Loaded %ld io devices successfully", m_io_device_states.size());
 
     LOG_DEBUG("Starting IO thread...");
 
