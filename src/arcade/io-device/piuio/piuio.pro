@@ -8,6 +8,7 @@ LIBS += -lusb-1.0
 
 SOURCES += \
     $$PWD/IODevicePiuio.cpp \
+    $$PWD/main.cpp \
     $$PWD/piuio-usb.c \
     $$PWD/usb.c
 

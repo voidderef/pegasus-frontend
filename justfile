@@ -21,8 +21,8 @@ build:
     make install
     cd ../..
     cp build/bin/pegasus-fe arcade/test/pegasus-fe
-    cp build/out/src/arcade/backend/libarcadebackend.so arcade/test/libarcade.so
-    cp build/out/src/arcade/io-device/piuio/libio-piuio.so arcade/test/libio-piuio.so
+    cp build/out/src/arcade/backend/libarcadebackend.so arcade/test/plugin/libarcade.so
+    cp build/out/src/arcade/io-device/piuio/libio-piuio.so arcade/test/plugin/libio-piuio.so
 
 clean:
     #!/usr/bin/env sh

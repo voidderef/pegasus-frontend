@@ -31,31 +31,24 @@ void IOManager::init()
 {
     LOG_INFO("Arcade IO manager initializing...");
 
-    for (auto ioDeviceLibrary : m_ioDeviceLibraries) {
-        LOG_DEBUG("Loading IO device library: %s", ioDeviceLibrary.toStdString().c_str());
+    LOG_DEBUG("Total IO devices: %ld", m_ioDevices.size());
 
-        QPluginLoader loader(ioDeviceLibrary);
+    QVector<IODevice*> opened_io_devices;
 
-        if (loader.load()) {
-            arcade::IODevice *io_device = qobject_cast<arcade::IODevice*>(loader.instance());
+    for (auto io_device : m_ioDevices) {
+        LOG_DEBUG("Opening IO device: %s", io_device->name());
 
-            LOG_DEBUG("Opening IO device: %s", io_device->name());
-
-            if (!io_device->open()) {
-                LOG_ERROR("Failed opening IO device: %s", io_device->name());
-                continue;
-            }
-
-            auto io_device_state = new IODeviceState(io_device);
-            m_io_device_states.push_back(io_device_state);
-
-            LOG_INFO("Loaded IO device library: %s", ioDeviceLibrary.toStdString().c_str());
-        } else {
-            LOG_ERROR("Failed loading IO device library: %s", ioDeviceLibrary.toStdString().c_str());
+        if (!io_device->open()) {
+            LOG_ERROR("Failed opening IO device: %s", io_device->name());
+            continue;
         }
+
+        opened_io_devices.push_back(io_device);
     }
 
-    LOG_INFO("Loaded %ld io devices successfully", m_io_device_states.size());
+    m_ioDevices = opened_io_devices;
+
+    LOG_INFO("Opened %ld io devices successfully", m_ioDevices.size());
 
     LOG_DEBUG("Starting IO thread...");
 
@@ -83,15 +76,17 @@ void IOManager::shutdown()
 
     LOG_DEBUG("Closing IO devices...");
 
-    for (auto io_device_state : m_io_device_states) {
-        LOG_DEBUG("Closing IO device: %s", io_device_state->m_device->name());
+    for (auto io_device : m_ioDevices) {
+        LOG_DEBUG("Closing IO device: %s", io_device->name());
 
-        if (!io_device_state->m_device->close()) {
-            LOG_WARN("Failed closing IO device: %s", io_device_state->m_device->name());
+        if (!io_device->close()) {
+            LOG_WARN("Failed closing IO device: %s", io_device->name());
         }
 
-        delete io_device_state;
-    }   
+        delete io_device;
+    }
+
+    m_ioDevices.clear();
 
     LOG_INFO("Arcade IO manager shutting down completed");
 }
@@ -101,26 +96,10 @@ void IOManager::io_thread()
     LOG_DEBUG("IO thread running");
 
     while (m_loop_thread.load() > 0) {
-        for (auto io_device_state : m_io_device_states) {
-            io_device_state->input_buffer_shift();
-
+        for (auto io_device : m_ioDevices) {
             // TODO remove any devices that fail updating
-            if (!io_device_state->m_device->update()) {
-                LOG_ERROR("Failed updating IO device: %s", io_device_state->m_device->name());
-            }
-
-            io_device_state->capture_current_input_states();
-
-            for (int i = 0; i < Input::Event::INPUT_EVENT_TOTAL_COUNT; i++) {
-                auto arcade_input = static_cast<Input::Event>(i);
-
-                if (io_device_state->inputIsPressed(arcade_input)) {
-                    emit inputPressed(arcade_input);
-                } else if (io_device_state->inputIsReleased(arcade_input)) {
-                    emit inputReleased(arcade_input);
-                } else if (io_device_state->inputIsHeld(arcade_input)) {
-                    emit inputHeld(arcade_input);
-                }
+            if (!io_device->update()) {
+                LOG_ERROR("Failed updating IO device: %s", io_device->name());
             }
         }
 

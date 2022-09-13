@@ -22,6 +22,7 @@
 #include <iostream>
 
 #include <QCommandLineParser>
+#include <QDir>
 #include <QFileInfo>
 #include <QGuiApplication>
 #include <QPluginLoader>
@@ -42,6 +43,7 @@ Q_IMPORT_PLUGIN(ApngImagePlugin)
 backend::CliArgs handle_cli_args(QGuiApplication&);
 bool request_runtime_permissions();
 bool portable_txt_present();
+void load_qt_plugins(const QString& base_path);
 
 int main(int argc, char *argv[])
 {
@@ -75,14 +77,7 @@ int main(int argc, char *argv[])
     backend::CliArgs cli_args = handle_cli_args(app);
     cli_args.portable |= portable_txt_present();
 
-    // TODO turn this into a dynamic solution to allow loading of any plugins from plugins folder
-    QPluginLoader loader("libarcade.so");
-
-    if (!loader.load()) {
-        std::cout << "Failed to load libarcade.so, skipping" << std::endl;
-    } else {
-        std::cout << "Arcade plugin loaded" << std::endl;
-    }
+    load_qt_plugins(QStringLiteral("plugin"));
 
     backend::Backend backend(cli_args);
     backend.start();
@@ -198,4 +193,24 @@ backend::CliArgs handle_cli_args(QGuiApplication& app)
     return args;
 
 #undef CMDMSG
+}
+
+void load_qt_plugins(const QString& base_path)
+{
+    QDir dir(base_path);
+    // TODO remove . and .. and scan only for .so or .dll files?
+    QStringList file_names = dir.entryList();
+
+    std::cout << "Detected " << file_names.size() << " plugins" << std::endl; 
+
+    foreach (QString file_name, file_names) {
+        QString abs_file_path = dir.absoluteFilePath(file_name);
+        QPluginLoader loader(abs_file_path);
+
+        if (!loader.load()) {
+            std::cout << "Failed loading plugin: " << abs_file_path.toStdString() << std::endl;
+        } else {
+            std::cout << "Loaded plugin: " << abs_file_path.toStdString() << std::endl;
+        }
+    }
 }
